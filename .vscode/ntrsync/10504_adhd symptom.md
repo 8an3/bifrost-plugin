@@ -1,0 +1,3 @@
+# adhd symptom
+
+It's like you had a copy of yourself and they had all the same reasoning and thought processing and all that like you usually do but they just didn't have the actual content of the events itself, like you missed the second part of the update that contained the memories themselves so when it's happening you stay calm analytical, and reason through whatever u need to, so the answers themselves will be different but you don't get mad, upset or confused like someone with Alzheimer's

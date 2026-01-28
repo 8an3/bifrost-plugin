@@ -1,0 +1,349 @@
+{
+  "Error_Checking_Action": {
+    "prefix": "error-checking-action",
+    "body": [
+      "// needs to be contained in a <Form method='post' > or else it wont work no fetcher no anything",
+      "const phone = formPayload.phone;",
+      "const phoneRegex = /^[2-9]\\d{2}[2-9]\\d{2}\\d{4}$/;",
+      "const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.(ca|com)$/;",
+      "const errors = {",
+      "    username: formPayload.username ? null : \"Full name is required...\",",
+      "    year: formPayload.year.length === 4 ? null : \"Year needs to be a length of 4...\",        ",
+      "    email: formPayload.email ? null : \"Email is required...\",",
+      "    phone: phoneRegex.test(phone) ? null : \"Phone must be in the format 4164164164\",",
+      "    position: formPayload.userRole ? null : 'Position / Role is required...',",
+      "    dept: formPayload.dept ? null : 'Dept is required...',",
+      "    emailFormat: emailRegex.test(formPayload.email) ? null : 'Incorrect email format...',",
+      "    phoneLength: phone.replace(/\\D/g, \"\").length === 10 ? null : 'Incorrect phone # length...', ",
+      "};",
+      "const hasErrors = Object.values(errors).some((errorMessage) => errorMessage);",
+      "if (hasErrors) { return json(errors); }",
+      "{errors?.username ? (<p className=\"text-[#ff0202] flex items-center\">{errors.username}</p>) : null}",
+      "{errors?.email ? (<p className=\"text-[#ff0202] flex items-center\">{errors.email}</p>) : null}",
+      "{errors?.phone ? (<p className=\"text-[#ff0202] flex items-center\">{errors.phone}</p>) : null}",
+      "{errors?.position ? (<p className=\"text-[#ff0202] flex items-center\">{errors.position}</p>) : null}",
+      "{errors?.dept ? (<p className=\"text-[#ff0202] flex items-center\">{errors.dept}</p>) : null}",
+      "{errors?.phoneLength ? (<p className=\"text-[#ff0202] flex items-center\">{errors.phoneLength}</p>) : null}",
+      "{errors?.emailFormat ? (<p className=\"text-[#ff0202] flex items-center\">{errors.emailFormat}</p>) : null}"
+    ],
+    "description": "Custom snippet from error-checking-action.snippet.tsx",
+    "scope": "typescript,typescriptreact"
+  },
+  "map_function": {
+    "prefix": "map_function",
+    "body": [
+      "{categories.map((item, index) => {",
+      "  return (",
+      "    <SelectItem key={index} value={item.value}>",
+      "      {item.name}",
+      "    </SelectItem>",
+      "  );",
+      "})}",
+      "                    <div className='grid gap-4'>",
+      "                      {customerCard.map((item, index) => {",
+      "                        return (",
+      "                          <div className=\"relative  mr-3\" key={index}>",
+      "                            <Input value={item.value} name={item.name} className='w-full' />",
+      "                            <label className=\" text-sm absolute left-3 rounded-full -top-3 px-2 bg-background transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-blue-500\">",
+      "                              {item.placeholder}",
+      "                            </label>",
+      "                          </div>",
+      "                        );",
+      "                      })}",
+      "                      <Button",
+      "                        size=\"sm\"",
+      "                        variant=\"outline\"",
+      "                        className='ml-auto'",
+      "                        type='submit'",
+      "                        name='intent'",
+      "                        value='editProduct'",
+      "                      >",
+      "                        Save",
+      "                      </Button>",
+      "                    </div>"
+    ],
+    "description": "Custom snippet from map-function.snippet.tsx",
+    "scope": "typescript,typescriptreact"
+  },
+  "toggle_prev_state": {
+    "prefix": "toggle_prev_state",
+    "body": [
+      "(prev) => !prev"
+    ],
+    "description": "Custom snippet from toggle-prev-state.snippet.tsx",
+    "scope": "typescript,typescriptreact"
+  },
+  "links_function": {
+    "prefix": "links_function",
+    "body": [
+      "export const links: LinksFunction = () => {\r\n  return [\r\n    { rel: \"stylesheet\", href: \"/styles/page.css\" },\r\n    { rel: \"preload\", href: \"/images/hero.jpg\", as: \"image\" },\r\n  ];\r\n};"
+    ],
+    "description": "",
+    "scope": "jsx / tsx"
+  },
+  "headers": {
+    "prefix": "headers",
+    "body": [
+      "export const headers = ({ loaderHeaders, parentHeaders }) => {",
+      "  return {",
+      "    \"Cache-Control\": \"no-store\",",
+      "    \"Custom-Header\": \"value\",",
+      "  };",
+      "};"
+    ],
+    "description": "Custom snippet from headers.snippet.tsx",
+    "scope": "typescript,typescriptreact"
+  },
+  "action": {
+    "prefix": "action",
+    "body": [
+      "import { json, redirect, type LoaderArgs, type ActionArgs } from \"@remix-run/node\";\r\nimport { prisma } from \"~/libs\";\r\nimport { authSessionStorage } from \"~/sessions/auth-session.server\";\r\nimport eP from \"~/utils/ext.server\";\r\nimport axios from \"axios\";\r\n\r\nexport async function action({ request }: ActionArgs) {\r\n  const session = await authSessionStorage.getSession(request.headers.get(\"Cookie\"));\r\n  const email = session.get(\"email\");\r\n  const user = await eP.user.simple(email)\r\n  if (!user) { return redirect(process.env.LOGIN); }\r\n\r\n  const d = Object.fromEntries(await request.formData());\r\n  const intent = d.intent\r\n\r\n  try {\r\n    if (intent === 'createFunction') {\r\n      const result = await prisma.Function.create({\r\n        data: {\r\n          ...data\r\n        }\r\n      });\r\n      return json({ success: true, result });\r\n    } else if (intent === 'updateFunction') {\r\n      const result = await prisma.Function.update({\r\n        where: { id: String(id) },\r\n        data\r\n      });\r\n      return json({ success: true, result });\r\n    } else if (intent === 'deleteFunction') {\r\n      const result = await prisma.Function.delete ({\r\n        where: { id: String(id) },\r\n\r\n      });\r\n      return json({ success: true, result });\r\n    } else {\r\n      return json({ success: false, error: \"Invalid intent\" }, { status: 400 });\r\n    }\r\n\r\n  } catch (error) {\r\n    return json({\r\n      success: false,\r\n      error: error instanceof Error ? error.message : \"Unknown error\"\r\n    }, { status: 500 });\r\n  }\r\n}"
+    ],
+    "description": "",
+    "scope": "jsx / tsx"
+  },
+  "session_loader": {
+    "prefix": "session-loader",
+    "body": [
+      "import { type LoaderFunction, json, redirect } from \"@remix-run/node\";",
+      "import { getSession, commitSession } from \"~/sessions/auth-session.server\";",
+      "export async function loader({ request }: LoaderFunction) {",
+      "  const session = await getSession(request.headers.get(\"Cookie\"));",
+      "  const user = session.get(\"user\");",
+      "  if (!user) {",
+      "    return redirect(\"/login\", {",
+      "      headers: {",
+      "        \"Set-Cookie\": await commitSession(session),",
+      "      },",
+      "    });",
+      "  }",
+      "  return json({ user }, {",
+      "    headers: {",
+      "      \"Set-Cookie\": await commitSession(session),",
+      "    },",
+      "  });",
+      "}"
+    ],
+    "description": "Custom snippet from session-loader.snippet.tsx",
+    "scope": "typescript,typescriptreact"
+  },
+  "seo_handle": {
+    "prefix": "seo_handle",
+    "body": [
+      "export const handle: SEOHandle = {\n  getSitemapEntries: () => {\n    return [\n      { url: \"/home\", changefreq: \"daily\", priority: 1.0 },\n      { url: \"/about\", changefreq: \"monthly\", priority: 0.8 },\n    ];\n  },\n};"
+    ],
+    "description": "Custom snippet from seo-handle.snippet.tsx",
+    "scope": "typescript,typescriptreact"
+  },
+  "handle_for_use_with_usematches": {
+    "prefix": "handle-for-use-with-usematches",
+    "body": [
+      "export const handle = {",
+      "  $1,",
+      "};"
+    ],
+    "description": "Custom snippet from handle-for-use-with-usematches.snippet.tsx",
+    "scope": "typescript,typescriptreact"
+  },
+  "error_boundary": {
+    "prefix": "error_boundary",
+    "body": [
+      "export function ErrorBoundary() {\r\n  const error = useRouteError();\r\n  \r\n  if (isRouteErrorResponse(error)) {\r\n    return (\r\n      <div className=\"error-container\">\r\n        <h1>\r\n          {error.status} {error.statusText}\r\n        </h1>\r\n        <p>{error.data}</p>\r\n      </div>\r\n    );\r\n  }\r\n  \r\n  return (\r\n    <div className=\"error-container\">\r\n      <h1>Something went wrong</h1>\r\n      <p>{error?.message || 'Unknown error occurred'}</p>\r\n    </div>\r\n  );\r\n}"
+    ],
+    "description": "",
+    "scope": "jsx / tsx"
+  },
+  "meta_function": {
+    "prefix": "meta_function",
+    "body": [
+      "export const meta: MetaFunction<typeof loader> = ({ data, params }) => {\r\n  return [\r\n    { title: \"Page Title\" },\r\n    { name: \"description\", content: \"Page description\" },\r\n    { name: \"keywords\", content: \"remix, react, typescript\" },\r\n    { property: \"og:title\", content: \"Page Title\" },\r\n    { property: \"og:description\", content: \"Page description\" },\r\n    { property: \"og:type\", content: \"website\" },\r\n  ];\r\n};"
+    ],
+    "description": "",
+    "scope": "jsx / tsx"
+  },
+  "headers_function": {
+    "prefix": "headers-function-static",
+    "body": [
+      "export const headers = ({ loaderHeaders, parentHeaders }) => {",
+      "  return {",
+      "    \"Content-Type\": \"application/json\",",
+      "  };",
+      "};export const headers = ({ loaderHeaders, parentHeaders }) => {",
+      "    return {",
+      "      \"Content-Type\": \"application/json\",",
+      "    };",
+      "  };"
+    ],
+    "description": "Custom snippet from headers-function.snippet.tsx",
+    "scope": "typescript,typescriptreact"
+  },
+  "Display_Date_with_options": {
+    "prefix": "Display_Date_with_options",
+    "body": [
+      "const options = { weekday: \"short\", year: \"numeric\", month: \"short\", day: \"numeric\", hour: \"2-digit\", minute: \"2-digit\" };\nnew Date(d).toLocaleDateString(\"en-US\", options)"
+    ],
+    "description": "Description_for_new_snippet",
+    "scope": "javascript, typescript"
+  },
+  "load_dynamic_data_into_meta_function": {
+    "prefix": "load_dynamic_data_into_meta_function",
+    "body": [
+      "import  { type LoaderFunction, type MetaFunction, json } from '@remix-run/node';",
+      "import { dealerSelection, fullUserSelection } from '~/utils/loader.server';",
+      "import { prisma } from '~/libs';",
+      "",
+      "export async function loader({ request, params }: LoaderFunction) {",
+      "    const d = await prisma.dealer.findUnique({ where: { id: 1 }, select: { dealerName: true, metaDesc: true} });",
+      "    const URLS = { page: 'About Us' };",
+      "    return json({",
+      "        data: {",
+      "            d: d,",
+      "            URLS: URLS",
+      "        }",
+      "    });",
+      "}",
+      "",
+      "export const meta: MetaFunction<typeof loader> = ({ data }) => {",
+      "    const { d, URLS } = data;",
+      "    return [",
+      "        { title: `${URLS.page} - ${d.dealerName}` },",
+      "        { name: \"description\", keywords: \"Automotive Sales, dealership sales, automotive CRM, Service Center, Parts Department, Accessories Department, CRM, Dealership.\", content: d.metaDesc }",
+      "    ];",
+      "};",
+      ""
+    ],
+    "description": "client_site_meta_and_loader",
+    "scope": "javascript, typescript"
+  },
+  "filter": {
+    "prefix": "filter",
+    "body": [
+      "const filter = Highlight?.filter(h => h.model.model === modelH);"
+    ],
+    "description": "Description_for_new_snippet",
+    "scope": "javascript, typescript"
+  },
+  "draggable_responsive_dialog_drawer": {
+    "prefix": "draggable_responsive_dialog_drawer",
+    "body": [
+      "export default function MainFunction() {\r\n    const { isMobile } = useSidebar()\r\n    const [isDialogOpen, setIsDialogOpen] = useState(false);\r\n    // DRAGGING\r\n    const [position, setPosition] = useState({ x: -200, y: -450 });\r\n    const [isDragging, setIsDragging] = useState(false);\r\n    const dragRef = useRef<HTMLDivElement>(null);\r\n    const startPosRef = useRef<{ x: number; y: number } | null>(null);\r\n    const shadowPosRef = useRef<{ x: number; y: number }>({ x: -350, y: -850 });\r\n\r\n    const handleMouseMove = useCallback((e: MouseEvent) => {\r\n        if (!isDragging || !startPosRef.current) return;\r\n\r\n        const shadowX = e.clientX - (startPosRef.current?.x || 0);\r\n        const shadowY = e.clientY - (startPosRef.current?.y || 0);\r\n\r\n        shadowPosRef.current = { x: shadowX, y: shadowY };\r\n\r\n        if (dragRef.current) {\r\n            dragRef.current.style.transform = \\`translate($ {shadowX}px, $ {shadowY}px)\\`;\r\n        }\r\n    }, [isDragging]);\r\n\r\n    const handleMouseUp = useCallback(() => {\r\n        // Set final position when dragging ends\r\n        setPosition(shadowPosRef.current);\r\n\r\n        // Reset dragging state\r\n        setIsDragging(false);\r\n        startPosRef.current = null;\r\n\r\n        // Remove visual transform\r\n        if (dragRef.current) {\r\n            dragRef.current.style.transform = 'none';\r\n        }\r\n    }, []);\r\n\r\n    useEffect(() => {\r\n        // Only add listeners when dragging\r\n        if (isDragging) {\r\n            document.addEventListener('mousemove', handleMouseMove, { passive: true });\r\n            document.addEventListener('mouseup', handleMouseUp, { passive: true });\r\n        }\r\n\r\n        // Cleanup function\r\n        return () => {\r\n            document.removeEventListener('mousemove', handleMouseMove);\r\n            document.removeEventListener('mouseup', handleMouseUp);\r\n        };\r\n    }, [isDragging, handleMouseMove, handleMouseUp]);\r\n\r\n    const handleRef = useRef<HTMLButtonElement>(null);\r\n    const handleMouseDown = useCallback((e: React.MouseEvent) => {\r\n        // Ensure we're dragging from the handle\r\n        if (e.target !== handleRef.current) return;\r\n\r\n        e.preventDefault();\r\n\r\n        // Capture initial mouse position\r\n        startPosRef.current = {\r\n            x: e.clientX - position.x,\r\n            y: e.clientY - position.y\r\n        };\r\n\r\n        // Initialize shadow position to current position\r\n        shadowPosRef.current = { ...position };\r\n\r\n        setIsDragging(true);\r\n    }, [position.x, position.y]);\r\n\r\n    return (\r\n        <>\r\n            <OpenButton setIsDialogOpen={setIsDialogOpen} />\r\n            <ResponsiveDialogDrawer\r\n                setIsDialogOpen={setIsDialogOpen}\r\n                isDialogOpen={isDialogOpen}\r\n                isMobile={isMobile}\r\n                position={position}\r\n                isDragging={isDragging}\r\n                dragRef={dragRef}\r\n            />\r\n        </>\r\n    )\r\n}\r\nfunction OpenButton({ setIsDialogOpen }) {\r\n    return (\r\n        <ButtonStyled\r\n            primary={false}\r\n            className=\" mr-auto ml-3 w-[150px] text-xs h-7 \"\r\n            onClick={() => { setIsDialogOpen(true);  }} >\r\n           Open\r\n        </ButtonStyled>\r\n    )\r\n}\r\nfunction MoveButton({ handleMouseDown, handleRef }) {\r\n    return (\r\n        <Button\r\n            ref={handleRef}\r\n            size=\"icon\"\r\n            variant=\"ghost\"\r\n            type='button'\r\n            onMouseDown={handleMouseDown}\r\n            className=' cursor-move'\r\n        >\r\n            <Move />\r\n        </Button>\r\n    )\r\n}\r\nfunction ResponsiveDialogDrawer({ isDialogOpen, setIsDialogOpen, isMobile, position,   isDragging,   dragRef, }) {\r\n\r\n    if (isMobile === false) {\r\n        return (\r\n            <Dialog\r\n                open={isDialogOpen}\r\n                onOpenChange={setIsDialogOpen}\r\n                modal={false} >\r\n                <DialogContent\r\n                    onInteractOutside={(e) => { e.preventDefault(); }}\r\n                    ref={dragRef}\r\n                    className={cn(\r\n                        isDragging ? \"pointer-events-none\" : \"\",\r\n                        isMobile === false ?\r\n                            \"absolute z-[100] bg-background border border-border border-dashed text-foreground shadow-md max-h-[90vh] h-auto\" :\r\n                            \"w-full h-full fixed bottom-0 left-0 right-0 z-[100] bg-background border-none  border-dashed\"\r\n                    )}\r\n                    style={{\r\n                        ...(isMobile === false ? {\r\n                            transform: \\`translate($ {position.x}px, $ {position.y}px)\\`,\r\n                            transition: isDragging ? 'none' : 'transform 0.1s ease-out',\r\n                            willChange: 'transform',\r\n                            width: small ? '325px' : '750px'\r\n                        } : {\r\n                            transform: 'none',\r\n                            transition: 'none',\r\n                        })\r\n                    }}\r\n                >\r\n                    <Content />\r\n                </DialogContent>\r\n            </Dialog>\r\n        )\r\n    }\r\n\r\n    return (\r\n        <Drawer open={isDialogOpen} onOpenChange={setIsDialogOpen}>\r\n            <DrawerContent>\r\n                <Content />\r\n                <DrawerFooter className=\"pt-2\">\r\n                    <DrawerClose asChild>\r\n                        <Button variant=\"outline\">Cancel</Button>\r\n                    </DrawerClose>\r\n                </DrawerFooter>\r\n            </DrawerContent>\r\n        </Drawer>\r\n    )\r\n}\r\nfunction Content({ handleMouseDown, handleRef }) {\r\n    return (\r\n        <div className='grid grid-cols-1 gap-3' >\r\n            <div className=\"flex justify-between items-center  gap-1 p-2\">\r\n                <div>\r\n\r\n                </div>\r\n                <div className='flex items-center gap-1'>\r\n                    <MoveButton  handleRef={handleRef}  handleMouseDown={handleMouseDown}  />\r\n                    <Button\r\n                        size=\"icon\"\r\n                        variant=\"ghost\"\r\n                        type='button'\r\n                        onClick={() => setIsDialogOpen(false)}\r\n                    >\r\n                        <X />\r\n                    </Button>\r\n\r\n                </div>\r\n            </div>\r\n            <div className='grid grid-cols-1 gap-3' >\r\n                <div className=\"p-4 max-h-[75vh] h-auto  overflow-y-auto\">\r\n                 \r\n                </div>\r\n            </div>\r\n        </div>\r\n    )\r\n}"
+    ],
+    "description": "",
+    "scope": "jsx / tsx"
+  },
+  "dob": {
+    "prefix": "dob",
+    "body": [
+      "\"use client\"",
+      "",
+      "import * as React from \"react\"",
+      "import { ChevronDownIcon } from \"lucide-react\"",
+      "",
+      "import { Button } from \"~/components/catalyst-ui/components/button\"",
+      "import { Calendar } from \"~/components/catalyst-ui/components/calendar\"",
+      "import { Label } from \"~/components/catalyst-ui/components/label\"",
+      "import {",
+      "  Popover,",
+      "  PopoverContent,",
+      "  PopoverTrigger,",
+      "} from \"~/components/catalyst-ui/components/popover\"",
+      "",
+      "export function DOB() {",
+      "  const [open, setOpen] = React.useState(false)",
+      "  const [date, setDate] = React.useState<Date | undefined>(undefined)",
+      "",
+      "  return (",
+      "    <div className=\"flex flex-col gap-3\">",
+      "      <Label htmlFor=\"date\" className=\"px-1\">",
+      "        Date of birth",
+      "      </Label>",
+      "      <Popover open={open} onOpenChange={setOpen}>",
+      "        <PopoverTrigger asChild>",
+      "          <Button",
+      "            variant=\"outline\"",
+      "            id=\"date\"",
+      "            className=\"w-48 justify-between font-normal\"",
+      "          >",
+      "            {date ? date.toLocaleDateString() : \"Select date\"}",
+      "            <ChevronDownIcon />",
+      "          </Button>",
+      "        </PopoverTrigger>",
+      "        <PopoverContent className=\"w-auto overflow-hidden p-0\" align=\"start\">",
+      "          <Calendar",
+      "            mode=\"single\"",
+      "            selected={date}",
+      "            captionLayout=\"dropdown\"",
+      "            onSelect={(date) => {",
+      "              setDate(date)",
+      "              setOpen(false)",
+      "            }}",
+      "          />",
+      "        </PopoverContent>",
+      "      </Popover>",
+      "    </div>",
+      "  )",
+      "}",
+      ""
+    ],
+    "description": "Description for dob",
+    "scope": "javascript,typescript"
+  },
+  "with_presets": {
+    "prefix": "with_presets",
+    "body": [
+      "\"use client\"",
+      "",
+      "import * as React from \"react\"",
+      "import { addDays } from \"date-fns\"",
+      "",
+      "import { Button } from \"~/components/catalyst-ui/components/button\"",
+      "import { Calendar } from \"~/components/catalyst-ui/components/calendar\"",
+      "import { Card, CardContent, CardFooter } from \"~/components/catalyst-ui/components/card\"",
+      "",
+      "export function WithPresets() {",
+      "  const [date, setDate] = React.useState<Date | undefined>(",
+      "    new Date(2025, 5, 12)",
+      "  )",
+      "",
+      "  return (",
+      "    <Card className=\"max-w-[300px] py-4\">",
+      "      <CardContent className=\"px-4\">",
+      "        <Calendar",
+      "          mode=\"single\"",
+      "          selected={date}",
+      "          onSelect={setDate}",
+      "          defaultMonth={date}",
+      "          className=\"bg-transparent p-0 [--cell-size:--spacing(9.5)]\"",
+      "        />",
+      "      </CardContent>",
+      "      <CardFooter className=\"flex flex-wrap gap-2 border-t px-4 !pt-4\">",
+      "        {[",
+      "          { label: \"Today\", value: 0 },",
+      "          { label: \"Tomorrow\", value: 1 },",
+      "          { label: \"In 3 days\", value: 3 },",
+      "          { label: \"In a week\", value: 7 },",
+      "          { label: \"In 2 weeks\", value: 14 },",
+      "        ].map((preset) => (",
+      "          <Button",
+      "            key={preset.value}",
+      "            variant=\"outline\"",
+      "            size=\"sm\"",
+      "            className=\"flex-1\"",
+      "            onClick={() => {",
+      "              const newDate = addDays(new Date(), preset.value)",
+      "              setDate(newDate)",
+      "            }}",
+      "          >",
+      "            {preset.label}",
+      "          </Button>",
+      "        ))}",
+      "      </CardFooter>",
+      "    </Card>",
+      "  )",
+      "}",
+      ""
+    ],
+    "description": "Description for with presets",
+    "scope": "javascript,typescript"
+  }
+}
