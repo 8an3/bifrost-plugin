@@ -1,13 +1,13 @@
 {
   "name": "bifrost-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Plugin installer for bifrost projects",
   "type": "module",
   "bin": {
     "bifrost-plugin": "./dist/index.js"
   },
   "scripts": {
-  "build": "tsup src/index.ts --format esm --dts --clean",
+    "build": "tsup src/index.ts --format esm --dts --clean",
     "dev": "tsup src/index.ts --format esm --dts --watch",
     "typecheck": "tsc --noEmit"
   },
