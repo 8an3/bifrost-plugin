@@ -1,3 +1,5 @@
+// src/submitter.ts
+
 import fs from 'fs-extra';
 import path from 'path';
 import chalk from 'chalk';
@@ -26,7 +28,7 @@ interface RegistryEntry {
   tags: string[];
 }
 
-const REGISTRY_REPO = '8an3/bifrost-plugin';
+const REGISTRY_REPO = 'A5GARD/BIFROST-PLUGIN';
 const REGISTRY_FILE = 'dist/registry.bifrost';
 
 export async function submitPlugin(): Promise<void> {

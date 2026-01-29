@@ -11,7 +11,7 @@ import { submitPlugin } from './submitter';
 const program = new Command();
 
 program
-  .name('bifrost-plugin')
+  .name('@a5gard/bifrost-plugin')
   .description('Plugin installer for bifrost projects')
   .version('1.0.0');
 
@@ -91,7 +91,7 @@ program
   });
 
 async function interactiveMode(): Promise<void> {
-  console.log(chalk.blue.bold('\n🌉 Bifrost Plugin Manager\n'));
+  console.log(chalk.blue.bold('\n🌉 bifrost Plugin Manager\n'));
   
   const { action } = await prompts({
     type: 'select',

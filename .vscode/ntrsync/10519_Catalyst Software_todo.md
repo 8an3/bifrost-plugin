@@ -246,6 +246,10 @@
     - [ ] https://uicolors.app/generate/324002
 
 
+
+
+
+
 - [ ] ★ ━━━━ ☆ ━━━━     NEW COMPS     ━━━━ ☆ ━━━━ ★
   - [ ] NEW TOOLS / comps are in the works for the library. With so many complicated tools, components and etc created and available for you to use out there, these will be built with the same principles and ideologies as everything else. Each tool will be as easy to use and implement as the components found within the library. Not only allowing their use tocoders of all levels, but also reducing the amount of time it takes to learn about and implement for all coders.
     - [ ] MESSENGER

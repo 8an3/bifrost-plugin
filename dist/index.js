@@ -637,7 +637,7 @@ Description: ${pluginConfig.description}"`,
 
 // src/index.ts
 var program = new Command();
-program.name("bifrost-plugin").description("Plugin installer for bifrost projects").version("1.0.0");
+program.name("@a5gard/bifrost-plugin").description("Plugin installer for bifrost projects").version("1.0.0");
 program.command("create").description("Create a new bifrost plugin").action(async () => {
   try {
     await createPlugin();
@@ -696,7 +696,7 @@ Error: ${error instanceof Error ? error.message : "Unknown error"}`));
   }
 });
 async function interactiveMode() {
-  console.log(chalk5.blue.bold("\n\u{1F309} Bifrost Plugin Manager\n"));
+  console.log(chalk5.blue.bold("\n\u{1F309} bifrost Plugin Manager\n"));
   const { action } = await prompts5({
     type: "select",
     name: "action",
