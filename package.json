@@ -1,10 +1,10 @@
 {
   "name": "@a5gard/bifrost-plugin",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Plugin installer / wizard for bifrost projects",
   "type": "module",
   "bin": {
-     "bifrost-plugin": "dist/index.js"
+    "bifrost-plugin": "dist/index.js"
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --clean",
@@ -14,11 +14,11 @@
   "files": [
     "dist"
   ],
-"keywords": [
-  "bifrost",
-  "plugin",
-  "cli"
-],
+  "keywords": [
+    "bifrost",
+    "plugin",
+    "cli"
+  ],
   "publishConfig": {
     "access": "public"
   },
