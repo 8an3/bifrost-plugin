@@ -7,9 +7,7 @@
     "bifrost-plugin": "./dist/index.js"
   },
   "scripts": {
-  "copy-registry": "bun copy-registry.js",
-  "build:tsup": "tsup src/index.ts --format esm --dts --clean",
-  "build": "npm run copy-registry && npm run build:tsup",
+  "build": "tsup src/index.ts --format esm --dts --clean",
     "dev": "tsup src/index.ts --format esm --dts --watch",
     "typecheck": "tsc --noEmit"
   },

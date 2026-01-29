@@ -1,3 +1,5 @@
+// src/types.ts
+
 export interface BifrostConfig {
   name: string;
   description: string;

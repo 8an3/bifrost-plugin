@@ -22,6 +22,7 @@
     - [ ] auth.github.callback.tsx
     - [ ] auth.github.tsx
     - [ ] honeypot-react
+    - [ ] tailwind-config.ts ngin
     - [ ] check all files
   - [ ] ★ ━━━━ PROMPT ━━━━ ★
     - [ ] providers.tsx
@@ -56,6 +57,7 @@
     - [ ] morphic navabr
     - [ ] morph-surface
     - [ ] motion-separator
+    - [ ] morph-navbar
   - [ ] ★ ━━━━ MEDIA ━━━━ ★
     - [ ] color pallete card
     - [ ] InfiniteSlider

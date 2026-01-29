@@ -1,8 +1,0 @@
- [
-  {
-    "name": "otp-auth-plugin",
-    "platform": "remix",
-    "github": "8an3/otp-auth-plugin",
-    "description": "One time password authentication plugin for Remix"
-  }
-]
